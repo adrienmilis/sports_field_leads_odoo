@@ -34,11 +34,11 @@ class SportsField(models.Model):
 	available_to = fields.Date(required=True, default = default_available_to)
 	monthly_price = fields.Float(required=True)
 	grass = fields.Boolean()
-	type_of_field = fields.Selection(
-		selection=[('hockey', 'Hockey'), ('football', 'Football'), ('rugby', 'Rugby'), ('other', 'Other')],
-		default='football',
-		help="Used to differentiate between different sports"
-	)
+	# type_of_field = fields.Selection(
+	# 	selection=[('hockey', 'Hockey'), ('football', 'Football'), ('rugby', 'Rugby'), ('other', 'Other')],
+	# 	default='football',
+	# 	help="Used to differentiate between different sports"
+	# )
 	booked_from = fields.Date(copy=False, readonly=True)
 	booked_to = fields.Date(copy=False, readonly=True)
 	final_total_price = fields.Float(copy=False, readonly=True)
@@ -50,4 +50,16 @@ class SportsField(models.Model):
 		default='new',
 		required=True,
 		copy=False
-		)
+	)
+	owner_id = fields.Many2one(
+			'res.partner', string="Owner",
+			help='The owner of the field',
+			copy=False
+	)
+	# finder: defaults to the current user
+	finder_id = fields.Many2one(
+			'res.users', string='Finder',
+			help="The club member that found the lead",
+			default=lambda self: self.env.user
+	)
+	tag_ids = fields.Many2many('sports_field_tag', string="Tags")

@@ -1,0 +1,25 @@
+<odoo>
+
+    <!-- action to add a new entry to the sports field type model -->
+    <record id="sports_field_type_action" model="ir.actions.act_window">
+        <field name="name">Sports field type</field>
+        <field name="res_model">sports_field_type</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!-- form -->
+    <record id="sports_field_type_view_form" model="ir.ui.view">
+        <field name="name">sports.field.type.form</field>
+        <field name="model">sports_field_type</field>
+        <field name="arch" type="xml">
+            <form string="Sports field type">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -3,5 +3,9 @@
         <menuitem id="sports_field_first_level_menu" name="Sports fields">
             <menuitem id="sports_field_model_menu_action" action="sports_field_action"/>
         </menuitem>
+        <menuitem id="sports_field_settings_menu" name="Settings">
+            <menuitem id="sports_field_type_menu_action" action="sports_field_type_action"/>
+            <menuitem id="sports_field_tag_menu_action" action="sports_field_tag_action"/>
+        </menuitem>
     </menuitem>
 </odoo>
