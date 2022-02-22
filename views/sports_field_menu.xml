@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="sports_field_menu_root" name="Sports Field">
+        <menuitem id="sports_field_first_level_menu" name="Sports fields">
+            <menuitem id="sports_field_model_menu_action" action="sports_field_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
