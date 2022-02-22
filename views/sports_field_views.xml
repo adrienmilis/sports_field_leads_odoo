@@ -1,5 +1,6 @@
 <odoo>
 
+    <!-- default views -->
     <record id="sports_field_action" model="ir.actions.act_window">
         <field name="name">Sports field model</field>
         <field name="res_model">sports_field</field>
@@ -47,11 +48,28 @@
                                 <field name="type_of_field"/>
                                 <field name="booked_from"/>
                                 <field name="booked_to"/>
+                                <field name="state"/>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="sports_field_view_search" model="ir.ui.view">
+        <field name="name">sports.field.search</field>
+        <field name="model">sports_field</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Name"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="monthly_price" string="Monthly price"/>
+                <field name="state" string="State"/>
+                <field name="grass" string="Grass"/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_sent')]"/>
+                <filter string="Postcode" name="postcode_filter" context="{'group_by': 'postcode'}"/>
+            </search>
         </field>
     </record>
 </odoo>
