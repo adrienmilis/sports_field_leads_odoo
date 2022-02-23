@@ -2,3 +2,4 @@ id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 access_sports_field_model,access_sports_field_model,model_sports_field,base.group_user,1,1,1,1
 access_sports_field_type_model,access_sports_field_type_model,model_sports_field_type,base.group_user,1,1,1,1
 access_sports_field_tag_model,access_sports_field_tag_model,model_sports_field_tag,base.group_user,1,1,1,1
+access_sports_field_offer_model,access_sports_field_offer_nodel,model_sports_field_offer,base.group_user,1,1,1,1

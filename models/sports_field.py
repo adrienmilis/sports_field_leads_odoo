@@ -51,6 +51,9 @@ class SportsField(models.Model):
 		required=True,
 		copy=False
 	)
+
+	### relations
+
 	owner_id = fields.Many2one(
 			'res.partner', string="Owner",
 			help='The owner of the field',
@@ -63,3 +66,5 @@ class SportsField(models.Model):
 			default=lambda self: self.env.user
 	)
 	tag_ids = fields.Many2many('sports_field_tag', string="Tags")
+	# one field can have many offers
+	offer_ids = fields.One2many('sports_field_offer', 'field_id', string="Offers")

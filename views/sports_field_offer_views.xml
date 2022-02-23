@@ -1,0 +1,40 @@
+<!--    
+        Create a tree view and a form view with the price,
+        partner_id and status fields. No need to create an action or a menu.
+-->
+
+<odoo>
+
+    <!-- form -->
+    <record id="sports_field_offer_form_view" model="ir.ui.view">
+        <field name="name">sports.field.offer.form</field>
+        <field name="model">sports_field_offer</field>
+        <field name="arch" type="xml">
+            <form string="Sports field offer">
+                <group>
+                <field name="monthly_price"/>
+                <field name="finder_id"/>
+                <field name="status"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- tree -->
+    <record id="sports_field_offer_tree_view" model="ir.ui.view">
+        <field name="name">sports_field_offer_tree</field>
+        <field name="model">sports_field_offer</field>
+        <field name="arch" type="xml">
+            <tree string="Offer tree">
+                    <field name="monthly_price"/>
+                    <field name="finder_id"/>
+                    <field name="status"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
