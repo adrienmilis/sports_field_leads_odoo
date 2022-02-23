@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import date
 
 # some attributes can impact the database schema
@@ -12,6 +12,26 @@ def default_available_from(arg):
 	else:
 		return date(today_date.year, 9, 1)
 
+# the dependency triggers a recomputation when one of the fields is changed
+@api.depends('available_to', 'available_from')
+def _compute_total_price(self):
+
+	for record in self:
+		if (self.available_from is not None and self.available_to is not None):
+			daily_price = (self.monthly_price * 12) / 365
+			self.total_price = daily_price * (self.available_to - self.available_from).days
+		else:
+			self.total_price = None
+
+@api.depends('offer_ids.monthly_price')
+def _compute_best_monthly_price(self):
+
+	if (self.offer_ids):
+		self.best_monthly_price = min(self.offer_ids.mapped('monthly_price'))
+	else:
+		self.best_monthly_price = 0
+
+
 def default_available_to(arg):
 
 	today_date = date.today()
@@ -20,6 +40,7 @@ def default_available_to(arg):
 	else:
 		return date(today_date.year + 1, 9, 1)
 
+# modifies one record at a time in the form view when grass is checked
 
 class SportsField(models.Model):
 
@@ -29,7 +50,7 @@ class SportsField(models.Model):
 	name = fields.Char(size=50, required=True)
 	description = fields.Text()
 	postcode = fields.Char(size=10)
-	yearly_days_off = fields.Integer()
+	yearly_days_off = fields.Integer(default=0)
 	available_from = fields.Date(required=True, default=default_available_from)
 	available_to = fields.Date(required=True, default = default_available_to)
 	monthly_price = fields.Float(required=True)
@@ -41,6 +62,7 @@ class SportsField(models.Model):
 	# )
 	booked_from = fields.Date(copy=False, readonly=True)
 	booked_to = fields.Date(copy=False, readonly=True)
+	total_price = fields.Float(compute=_compute_total_price)
 	final_total_price = fields.Float(copy=False, readonly=True)
 	active = fields.Boolean(default=True)
 	state = fields.Selection(
@@ -51,6 +73,7 @@ class SportsField(models.Model):
 		required=True,
 		copy=False
 	)
+	best_monthly_price = fields.Float(compute=_compute_best_monthly_price)
 
 	### relations
 
@@ -68,3 +91,8 @@ class SportsField(models.Model):
 	tag_ids = fields.Many2many('sports_field_tag', string="Tags")
 	# one field can have many offers
 	offer_ids = fields.One2many('sports_field_offer', 'field_id', string="Offers")
+
+	@api.onchange('grass')
+	def _onchange_grass(self):
+		print('\n==== TEST ====\n')
+		self.yearly_days_off = 10

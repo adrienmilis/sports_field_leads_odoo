@@ -39,6 +39,7 @@
                         <field name="available_to"/>
                         <field name="monthly_price"></field>
                         <field name="final_total_price"></field>
+                        <field name="best_monthly_price"></field>
                     </group>
                     <notebook>
                         <page string="Description">
@@ -50,6 +51,7 @@
                                 <field name="booked_from"/>
                                 <field name="booked_to"/>
                                 <field name="state"/>
+                                <field name="total_price"/>
                             </group>
                         </page>
                         <page string="Offers">
