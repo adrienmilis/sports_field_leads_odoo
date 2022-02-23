@@ -44,3 +44,26 @@ class SportsFieldOffer(models.Model):
     finder_id = fields.Many2one('res.users', required=True)
     # there can be many offers for one field
     field_id = fields.Many2one('sports_field', required=True)
+
+    def action_offer_accepted(self):
+
+        # once an order has been accepted, set the others to refused
+        # --> self.field_id.offer_ids gives us all the offers
+        for offer in self.field_id.offer_ids:
+            if (offer != self):
+                offer.status = 'refused'
+
+
+        for order in self:
+            print('hello')
+            order.status = 'accepted'
+            
+            self.field_id.final_total_price = ((self.monthly_price * 12) / 365) * \
+                    (self.to_date - self.from_date).days
+
+    def action_offer_refused(self):
+
+        for order in self:
+            if (order.status == 'accepted'):
+                self.field_id.final_total_price = None
+            order.status = 'refused'

@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from datetime import date
 
 # some attributes can impact the database schema
@@ -94,5 +94,20 @@ class SportsField(models.Model):
 
 	@api.onchange('grass')
 	def _onchange_grass(self):
-		print('\n==== TEST ====\n')
 		self.yearly_days_off = 10
+
+	def action_sold(self):
+		
+		for record in self:
+			if (record.state != 'canceled'):
+				record.state = 'signed'
+			else:
+				raise exceptions.UserError('Canceled fields cannot be set as signed.')
+
+	def action_cancel(self):
+		
+		for record in self:
+			if (record.state != 'signed'):
+				record.state = 'canceled'
+			else:
+				raise exceptions.UserError('Signed fields cannot be set as canceled.')

@@ -29,6 +29,10 @@
         <field name="model">sports_field</field>
         <field name="arch" type="xml">
             <form string="Sports field">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
