@@ -74,6 +74,10 @@ class SportsField(models.Model):
 		copy=False
 	)
 	best_monthly_price = fields.Float(compute=_compute_best_monthly_price)
+	_sql_constraints = [
+		('check_monthly_price', 'CHECK(monthly_price >= 0)',
+			'Monthly price should be greater or equal to 0.'),
+	]
 
 	### relations
 
@@ -95,6 +99,9 @@ class SportsField(models.Model):
 	@api.onchange('grass')
 	def _onchange_grass(self):
 		self.yearly_days_off = 10
+
+	# when we make an offer, the monthly price cannot be higher than 100%
+	# of the field's monthly price
 
 	def action_sold(self):
 		

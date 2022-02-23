@@ -1,6 +1,9 @@
 from odoo import api, fields, models
 import datetime
 
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
+
 # populates the field
 @api.depends('create_date', 'validity')
 def _compute_date_deadline(self):
@@ -16,7 +19,6 @@ def _compute_date_deadline(self):
 # called when saving the record
 def _inverse_date_deadline(self):
 
-    print("\n========== TEST =========\n")
     for offer in self:
         if (offer.date_deadline and offer.create_date):
             offer.validity = (offer.date_deadline - offer.create_date).days
@@ -45,6 +47,20 @@ class SportsFieldOffer(models.Model):
     # there can be many offers for one field
     field_id = fields.Many2one('sports_field', required=True)
 
+    _sql_constraints = [
+        ('check_monthly_price', 'CHECK(monthly_price >= 0)',
+            "Offer's monthly price should be greater or equal to 0."),
+    ]
+
+    # the offer monthly price cannot be higher than the field monthly price
+    @api.constrains('monthly_price')
+    def _check_monthly_price(self):
+        
+        print('\n=====CHECKING PRICE=====\n')
+        for offer in self:
+            if (float_compare(offer.monthly_price, offer.field_id.monthly_price, precision_digits=4) > 0):
+                raise ValidationError("Offer's monthly price cannot be higher than the field's max price.")
+
     def action_offer_accepted(self):
 
         # once an order has been accepted, set the others to refused
@@ -52,7 +68,6 @@ class SportsFieldOffer(models.Model):
         for offer in self.field_id.offer_ids:
             if (offer != self):
                 offer.status = 'refused'
-
 
         for order in self:
             print('hello')

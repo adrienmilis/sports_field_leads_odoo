@@ -6,3 +6,7 @@ class SportsFieldType(models.Model):
     _description = "The type of the sports field (the original sport it's used for)"
 
     name = fields.Char(required=True)
+
+    _sql_constraints = [
+        ('name_unique', 'unique(name)', "Sports field type name should be unique."),
+    ]
