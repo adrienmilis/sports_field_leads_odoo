@@ -4,7 +4,7 @@
     <record id="sports_field_type_action" model="ir.actions.act_window">
         <field name="name">Sports field type</field>
         <field name="res_model">sports_field_type</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
     <!-- form -->
@@ -17,8 +17,31 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="sports_field_ids">
+                                <tree>
+                                    <field name="name" string="Title"/>
+                                    <field name="monthly_price"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <!-- tree -->
+    <record id="sports_field_type_tree_view" model="ir.ui.view">
+        <field name="name">sports_field_type_tree</field>
+        <field name="model">sports_field_type</field>
+        <field name="arch" type="xml">
+            <tree string="Tree">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
         </field>
     </record>
 

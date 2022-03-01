@@ -3,7 +3,7 @@
     <record id="sports_field_tag_action" model="ir.actions.act_window">
         <field name="name">Sports field tag</field>
         <field name="res_model">sports_field_tag</field>
-        <field name="view_mode">form</field>
+        <field name="view_mode">tree,form</field>
     </record>   
 
 </odoo>

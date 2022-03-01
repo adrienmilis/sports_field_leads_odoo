@@ -29,6 +29,7 @@ class SportsFieldOffer(models.Model):
 
     _name = "sports_field_offer"
     _description = "An offer for a particular field with dates and price"
+    _order = "monthly_price asc"
 
     monthly_price = fields.Float(required=True)
     status = fields.Selection(
@@ -56,7 +57,6 @@ class SportsFieldOffer(models.Model):
     @api.constrains('monthly_price')
     def _check_monthly_price(self):
         
-        print('\n=====CHECKING PRICE=====\n')
         for offer in self:
             if (float_compare(offer.monthly_price, offer.field_id.monthly_price, precision_digits=4) > 0):
                 raise ValidationError("Offer's monthly price cannot be higher than the field's max price.")
@@ -69,8 +69,8 @@ class SportsFieldOffer(models.Model):
             if (offer != self):
                 offer.status = 'refused'
 
+        self.field_id.state = 'offer_accepted'
         for order in self:
-            print('hello')
             order.status = 'accepted'
             
             self.field_id.final_total_price = ((self.monthly_price * 12) / 365) * \

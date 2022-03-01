@@ -12,13 +12,16 @@
         <field name="name">sports.field.tree</field>
         <field name="model">sports_field</field>
         <field name="arch" type="xml">
-            <tree string="Channel">
+            <tree string="Channel" decoration-success="state=='offer_sent' or state =='offer_accepted'"
+                    decoration-muted="state=='signed'" decoration-bf="state=='offer_accepted'">
+                <field name="sports_field_type_id"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="monthly_price"/>
-                <field name="available_from"/>
+                <field name="available_from" optional="1"/>
                 <field name="final_total_price"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="state" optional="1"/>
             </tree>
         </field>
     </record>
@@ -30,15 +33,18 @@
         <field name="arch" type="xml">
             <form string="Sports field">
                 <header>
-                    <button name="action_sold" type="object" string="Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+
+                    <button name="action_sold" type="object" string="Sold" states="new,offer_sent,offer_accepted"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="new,offer_sent,offer_accepted"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_sent,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group col="4" colspan="2">
+                        <field name="sports_field_type_id" options='{"no_create": true}'/>
                         <field name="available_from"></field>
                         <field name="available_to"/>
                         <field name="monthly_price"></field>
@@ -50,16 +56,17 @@
                             <group>
                                 <field name="description"/>
                                 <field name="postcode"></field>
-                                <field name="yearly_days_off"/>
                                 <field name="grass"/>
+                                <field name="yearly_days_off" attrs="{'invisible': [('grass', '=', False)]}"/>
                                 <field name="booked_from"/>
                                 <field name="booked_to"/>
-                                <field name="state"/>
                                 <field name="total_price"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids"
+                                    attrs="{'readonly': ['|', ('state', '=', 'offer_accepted'), '|',
+                                            ('state', '=', 'signed'), ('state', '=', 'canceled')]}"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -79,6 +86,7 @@
         <field name="model">sports_field</field>
         <field name="arch" type="xml">
             <search>
+                <field name="sports_field_type_id" string="Field type"/>
                 <field name="name" string="Name"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="monthly_price" string="Monthly price"/>
@@ -86,6 +94,7 @@
                 <field name="grass" string="Grass"/>
                 <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_sent')]"/>
                 <filter string="Postcode" name="postcode_filter" context="{'group_by': 'postcode'}"/>
+                <filter string="Status" name="state_filter" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>

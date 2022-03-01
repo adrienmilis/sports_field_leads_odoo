@@ -46,6 +46,7 @@ class SportsField(models.Model):
 
 	_name = 'sports_field'
 	_description = 'Properties of the potential sports fields to rent'
+	_order = 'id desc'
 
 	name = fields.Char(size=50, required=True)
 	description = fields.Text()
@@ -81,6 +82,10 @@ class SportsField(models.Model):
 
 	### relations
 
+	sports_field_type_id = fields.Many2one(
+		'sports_field_type',
+		string="Sports field type",
+	)
 	owner_id = fields.Many2one(
 			'res.partner', string="Owner",
 			help='The owner of the field',
@@ -96,12 +101,17 @@ class SportsField(models.Model):
 	# one field can have many offers
 	offer_ids = fields.One2many('sports_field_offer', 'field_id', string="Offers")
 
+	@api.onchange('offer_ids')
+	def _onchange_offer_ids(self):
+
+		if (self.state == 'new'):
+			self.state = 'offer_sent'
+		if (len(self.offer_ids) == 0):
+			self.state = 'new'
+
 	@api.onchange('grass')
 	def _onchange_grass(self):
 		self.yearly_days_off = 10
-
-	# when we make an offer, the monthly price cannot be higher than 100%
-	# of the field's monthly price
 
 	def action_sold(self):
 		

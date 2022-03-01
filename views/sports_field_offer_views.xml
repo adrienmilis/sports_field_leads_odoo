@@ -30,7 +30,8 @@
         <field name="name">sports_field_offer_tree</field>
         <field name="model">sports_field_offer</field>
         <field name="arch" type="xml">
-            <tree string="Offer tree">
+            <tree string="Offer tree" editable="top" decoration-success="status=='accepted'"
+                decoration-danger="status=='refused'">
                     <field name="monthly_price"/>
                     <field name="finder_id"/>
                     <field name="from_date"/>
@@ -38,9 +39,11 @@
                     <field name="validity"/>
                     <field name="date_deadline"/>
                     <field name="create_date"/>
-                    <button name="action_offer_accepted" type="object" icon="fa-check"/>
-                    <button name="action_offer_refused" type="object" icon="fa-times"/>             
-                    <field name="status"/>
+                    <button name="action_offer_accepted" type="object" icon="fa-check"
+                            attrs="{'invisible': ['|', ( 'status', '=', 'accepted' ), ('status', '=', 'refused')]}"/>
+                    <button name="action_offer_refused" type="object" icon="fa-times"
+                            attrs="{'invisible': ['|', ( 'status', '=', 'accepted' ), ('status', '=', 'refused')]}"/>             
+                    <field name="status" invisible="1"/>
             </tree>
         </field>
     </record>
