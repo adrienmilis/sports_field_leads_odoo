@@ -13,12 +13,18 @@
         <field name="model">sports_field_type</field>
         <field name="arch" type="xml">
             <form string="Sports field type">
+                <header>
+                    <button string="Offers" type="action"
+                        name="%(sports_field_offer_action)d"
+                        icon="fa-money"
+                        class="oe_stat_button"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <notebook>
-                        <page string="Properties">
+                        <page string="Fields">
                             <field name="sports_field_ids">
                                 <tree>
                                     <field name="name" string="Title"/>
@@ -41,6 +47,8 @@
             <tree string="Tree">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_ids"/>
+                <field name="offer_count"/>
             </tree>
         </field>
     </record>

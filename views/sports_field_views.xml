@@ -5,6 +5,7 @@
         <field name="name">Sports field model</field>
         <field name="res_model">sports_field</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <!-- tree, overrides the default -->
@@ -89,7 +90,8 @@
                 <field name="sports_field_type_id" string="Field type"/>
                 <field name="name" string="Name"/>
                 <field name="postcode" string="Postcode"/>
-                <field name="monthly_price" string="Monthly price"/>
+                <field name="monthly_price" string="Monthly price"
+                    filter_domain="[('monthly_price', '&lt;=', self)]"/>
                 <field name="state" string="State"/>
                 <field name="grass" string="Grass"/>
                 <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_sent')]"/>

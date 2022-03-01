@@ -47,6 +47,7 @@ class SportsFieldOffer(models.Model):
     finder_id = fields.Many2one('res.users', required=True)
     # there can be many offers for one field
     field_id = fields.Many2one('sports_field', required=True)
+    sports_field_type_id = fields.Many2one('sports_field_type', related="field_id.sports_field_type_id")
 
     _sql_constraints = [
         ('check_monthly_price', 'CHECK(monthly_price >= 0)',

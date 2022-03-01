@@ -5,6 +5,13 @@
 
 <odoo>
 
+    <record id="sports_field_offer_action" model="ir.actions.act_window">
+        <field name="name">Sports field offer</field>
+        <field name="res_model">sports_field_offer</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">[('sports_field_type_id', '=', active_id)]</field>
+    </record>
+
     <!-- form -->
     <record id="sports_field_offer_form_view" model="ir.ui.view">
         <field name="name">sports.field.offer.form</field>
@@ -44,6 +51,7 @@
                     <button name="action_offer_refused" type="object" icon="fa-times"
                             attrs="{'invisible': ['|', ( 'status', '=', 'accepted' ), ('status', '=', 'refused')]}"/>             
                     <field name="status" invisible="1"/>
+                    <field name="sports_field_type_id"/>
             </tree>
         </field>
     </record>

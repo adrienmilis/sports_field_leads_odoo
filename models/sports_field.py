@@ -56,11 +56,6 @@ class SportsField(models.Model):
 	available_to = fields.Date(required=True, default = default_available_to)
 	monthly_price = fields.Float(required=True)
 	grass = fields.Boolean()
-	# type_of_field = fields.Selection(
-	# 	selection=[('hockey', 'Hockey'), ('football', 'Football'), ('rugby', 'Rugby'), ('other', 'Other')],
-	# 	default='football',
-	# 	help="Used to differentiate between different sports"
-	# )
 	booked_from = fields.Date(copy=False, readonly=True)
 	booked_to = fields.Date(copy=False, readonly=True)
 	total_price = fields.Float(compute=_compute_total_price)
